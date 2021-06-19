@@ -6,3 +6,8 @@ https://github.com/tscohen/GrouPy
 https://github.com/adambielski/GrouPy (Forked) 
 
 https://github.com/COGMAR/RotEqNet
+
+
+## Dependencies
+
+https://github.com/tscohen/GrouPy
