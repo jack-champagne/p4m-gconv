@@ -79,10 +79,12 @@ class RotMNIST(VisionDataset):
             transform: Optional[Callable] = None,
             target_transform: Optional[Callable] = None,
             download: bool = False,
+            rotation_mirroring: bool = True,
     ) -> None:
         super(RotMNIST, self).__init__(root, transform=transform,
                                     target_transform=target_transform)
         self.train = train  # training set or test set
+        self.rotation_mirroring = rotation_mirroring
 
         if self._check_legacy_exist():
             self.data, self.targets = self._load_legacy_data()
@@ -141,24 +143,29 @@ class RotMNIST(VisionDataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        # A note on the group p4m (rotation, flip, translation) and info on the conv.
-        # There are 4 possible rotations that can be done to form the rotation
-        # group of a set of data
-        # There are 2 possible flips than can be done that form the mirror 
-        # group of a set of data
-        # 
-        # Flipping both in X and in Y is the same as a rotation 180 degrees, and is
-        # therefore unecessary. Here is the procedure for generated the desired data:
-        # *     We decide the mirroring axis for the image (Image can stay the same,
-        # flip horiz. or flip vertically)
-        # *     We decide number of 90 degree rotations to apply to image
 
-        # Preform random rotation and mirroring for img
-        # Preform flip
-        img = torch.flip(img, [random.randint(-1, 1)])
+        if self.rotation_mirroring:
+            # A note on the group p4m (rotation, flip, translation) and info on the conv.
+            # There are 4 possible rotations that can be done to form the rotation
+            # group of a set of data
+            # There are 2 possible flips than can be done that form the mirror 
+            # group of a set of data
+            # 
+            # Flipping both in X and in Y is the same as a rotation 180 degrees, and is
+            # therefore unecessary. Here is the procedure for generated the desired data:
+            # *     We decide the mirroring axis for the image (Image can stay the same,
+            # flip horiz. or flip vertically)
+            # *     We decide number of 90 degree rotations to apply to image
 
-        # Preform random rotation (90 increments)
-        img = torch.rot90(img, random.randint(-1, 2), [-1, 1])
+            # Preform random rotation and mirroring for img
+            # Preform flip
+            img = torch.flip(img, [random.randint(-1, 1)])
+
+            # Preform random rotation (90 increments)
+            img = torch.rot90(img, random.randint(-1, 2), [-1, 1])
+        else:
+            # Do nothing
+            img = img
 
         return img, target
 
