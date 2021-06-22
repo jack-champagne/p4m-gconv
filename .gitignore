@@ -1,3 +1,6 @@
 data
 *.pth
 *.onnx
+__pycache__
+*.cpython
+*.pyc
