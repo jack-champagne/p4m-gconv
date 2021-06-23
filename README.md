@@ -4,6 +4,7 @@
 Jupyter notebooks with implementation details of p4m-gconv. See the below githubs for more information:
 
 Tests
+
 [X] - **Both** CNN and G-Conv CNN train on rotated and mirrored MNIST images
 
 [X] - **Both** CNN and G-Conv CNN train on only upright MNIST images
