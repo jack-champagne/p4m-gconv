@@ -4,11 +4,6 @@ import torch.nn.functional as F
 import gconvutils as gutils
 from groupy.gconv.pytorch_gconv import P4MConvZ2, P4MConvP4M
 
-# TODO: Seperate the following into a normal convolution file
-        # self.conv1 = nn.Conv2d(1, 6, 5)
-        # self.pool = nn.MaxPool2d(2, 2) - getting replaced by plane_group_max_pooling
-        # self.conv2 = nn.Conv2d(6, 16, 5)
-
 class P4Net(nn.Module):
     def __init__(self):
         super(P4Net, self).__init__() 
