@@ -5,18 +5,14 @@ import gconvutils as gutils
 from groupy.gconv.pytorch_gconv import P4MConvZ2, P4MConvP4M
 
 class P4MNet(nn.Module):
-
     def __init__(self):
         super(P4MNet, self).__init__() 
-        # self.conv1 = nn.Conv2d(1, 6, 5)
-        self.conv1 = P4MConvZ2(in_channels=1, out_channels=6, kernel_size=5, stride=1)
-        # self.pool = nn.MaxPool2d(2, 2) - getting replaced by plane_group_max_pooling
-        # self.conv2 = nn.Conv2d(6, 16, 5)
-        self.conv2 = P4MConvP4M(in_channels=6, out_channels=16, kernel_size=5, stride=1)
+        self.conv1 = P4MConvZ2(in_channels=1, out_channels=8, kernel_size=5, stride=1)
+        self.conv2 = P4MConvP4M(in_channels=8, out_channels=16, kernel_size=5, stride=1)
         self.conv3 = P4MConvP4M(in_channels=16, out_channels=32, kernel_size=5)
 
-        self.fc1 = nn.Linear(32, 10)
-        self.fc2 = nn.Linear(10, 10)
+        self.fc1 = nn.Linear(32, 16)
+        self.fc2 = nn.Linear(16, 10)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
