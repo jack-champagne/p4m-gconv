@@ -20,7 +20,7 @@ class P4MNet(nn.Module):
         x = F.relu(self.conv2(x))
         x = gutils.plane_group_spatial_max_pooling(x, 2, 2)
         x = F.relu(self.conv3(x))
-        x = gutils.plane_group_spatial_max_pooling(x, 1, 1)
+        x = gutils.plane_group_spatial_max_pooling(x, 1, 1) # Is this even doing anything?
         x = torch.max(x, dim=2)[0]
         x = torch.flatten(x, 1)
         x = F.relu(self.fc1(x))
@@ -30,11 +30,11 @@ class P4MNet(nn.Module):
 class P4MNetC(nn.Module):
     def __init__(self):
         super(P4MNetC, self).__init__() 
-        self.conv1 = P4MConvZ2(in_channels=3, out_channels=16, kernel_size=5, stride=1)
-        self.conv2 = P4MConvP4M(in_channels=16, out_channels=32, kernel_size=5, stride=1)
-        self.conv3 = P4MConvP4M(in_channels=32, out_channels=64, kernel_size=5)
+        self.conv1 = P4MConvZ2(in_channels=3, out_channels=12, kernel_size=5, stride=1)
+        self.conv2 = P4MConvP4M(in_channels=12, out_channels=24, kernel_size=5, stride=1)
+        self.conv3 = P4MConvP4M(in_channels=24, out_channels=48, kernel_size=5)
 
-        self.fc1 = nn.Linear(64, 32)
+        self.fc1 = nn.Linear(48, 32)
         self.fc2 = nn.Linear(32, 10)
 
     def forward(self, x):
@@ -43,7 +43,6 @@ class P4MNetC(nn.Module):
         x = F.relu(self.conv2(x))
         x = gutils.plane_group_spatial_max_pooling(x, 2, 2)
         x = F.relu(self.conv3(x))
-        x = gutils.plane_group_spatial_max_pooling(x, 1, 1)
         x = torch.max(x, dim=2)[0]
         x = torch.flatten(x, 1)
         x = F.relu(self.fc1(x))
