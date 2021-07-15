@@ -32,16 +32,16 @@ To get these results, I trained two seperate models (with similar numbers of par
 * A normal CNN with two convolution layers, and two hidden fully connected layers.
 * A group equivariant model with two convolution layers and two hidden fully connected layers.
 
-### Comparisons
+### Better comparisons
 
-10 epochs of training on similar size (parameter number) networks. Batch size of 64, shuffled.
+50 epochs of training on similar size (parameter number) networks. Batch size of 64, shuffled.
 Always test the neural network on rotated MNIST (This applies the 4 rotations and 2 mirrors possible as
 described in [this paper](https://arxiv.org/pdf/1602.07576.pdf))
 
-| Model   | Upright MNIST  Training Performance | RotMNIST Training Performance |
-|---------|-------------------------------------|-------------------------------|
-| CNN     | 31.95%                              | 87.84%                        |
-| P4M CNN | 32.14%                              | 94.06%                        |
-| P4 CNN  | 33.13%                              | 91.65%                        |
+| Model | Upright MNIST Training | Rotated MNIST Training |
+|-------|------------------------|------------------------|
+| CNN   | 31.63%                 | 93.36%                 |
+| P4M   | 97.24%                 |    (Is equivariant)    |
+| P4    | 97.4%                  |    (Is equivariant)    |
 
 Standard deviations have not been calculuated yet but I assume they are quite small.
