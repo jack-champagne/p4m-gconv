@@ -30,12 +30,15 @@ class P4Net(nn.Module):
 class P4NetC(nn.Module):
     def __init__(self):
         super(P4NetC, self).__init__() 
-        self.conv1 = P4ConvZ2(in_channels=3, out_channels=16, kernel_size=5, stride=1)
-        self.conv2 = P4ConvP4(in_channels=16, out_channels=32, kernel_size=5, stride=1)
-        self.conv3 = P4ConvP4(in_channels=32, out_channels=64, kernel_size=5, stride=1)
+        self.conv1 = P4ConvZ2(in_channels=3, out_channels=16, kernel_size=3, stride=1)
+        self.conv2 = P4ConvP4(in_channels=16, out_channels=32, kernel_size=3, stride=1)
+        self.conv3 = P4ConvP4(in_channels=32, out_channels=64, kernel_size=3, stride=1)
 
-        self.fc1 = nn.Linear(64, 32)
-        self.fc2 = nn.Linear(32, 10)
+        self.fc1 = nn.Linear(64 * 4 * 4, 256)
+        self.fc2 = nn.Linear(256, 64)
+        self.fc3 = nn.Linear(64, 10)
+
+        self.dropout = nn.Dropout(p=0.2)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
@@ -45,6 +48,7 @@ class P4NetC(nn.Module):
         x = F.relu(self.conv3(x))
         x = torch.max(x, dim=2)[0]
         x = torch.flatten(x, 1)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = self.dropout(F.relu(self.fc1(x)))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
